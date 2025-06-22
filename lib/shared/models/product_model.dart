@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductModel {
   final String id;
@@ -37,47 +37,49 @@ class ProductModel {
     required this.stats,
   });
 
-  factory ProductModel.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-    return ProductModel(
-      id: doc.id,
-      name: data['name'] ?? '',
-      description: data['description'] ?? '',
-      price: (data['price'] ?? 0).toDouble(),
-      category: data['category'] ?? '',
-      imageUrls: List<String>.from(data['imageUrls'] ?? []),
-      sellerId: data['sellerId'] ?? '',
-      sellerName: data['sellerName'] ?? '',
-      isAvailable: data['isAvailable'] ?? true,
-      stockQuantity: data['stockQuantity'] ?? 0,
-      rating: (data['rating'] ?? 0).toDouble(),
-      reviewCount: data['reviewCount'] ?? 0,
-      tags: List<String>.from(data['tags'] ?? []),
-      createdAt: (data['createdAt'] as Timestamp).toDate(),
-      updatedAt: (data['updatedAt'] as Timestamp).toDate(),
-      stats: ProductStats.fromMap(data['stats'] ?? {}),
-    );
-  }
+  // Firebase integration temporarily disabled
+  // factory ProductModel.fromFirestore(DocumentSnapshot doc) {
+  //   final data = doc.data() as Map<String, dynamic>;
+  //   return ProductModel(
+  //     id: doc.id,
+  //     name: data['name'] ?? '',
+  //     description: data['description'] ?? '',
+  //     price: (data['price'] ?? 0).toDouble(),
+  //     category: data['category'] ?? '',
+  //     imageUrls: List<String>.from(data['imageUrls'] ?? []),
+  //     sellerId: data['sellerId'] ?? '',
+  //     sellerName: data['sellerName'] ?? '',
+  //     isAvailable: data['isAvailable'] ?? true,
+  //     stockQuantity: data['stockQuantity'] ?? 0,
+  //     rating: (data['rating'] ?? 0).toDouble(),
+  //     reviewCount: data['reviewCount'] ?? 0,
+  //     tags: List<String>.from(data['tags'] ?? []),
+  //     createdAt: (data['createdAt'] as Timestamp).toDate(),
+  //     updatedAt: (data['updatedAt'] as Timestamp).toDate(),
+  //     stats: ProductStats.fromMap(data['stats'] ?? {}),
+  //   );
+  // }
 
-  Map<String, dynamic> toFirestore() {
-    return {
-      'name': name,
-      'description': description,
-      'price': price,
-      'category': category,
-      'imageUrls': imageUrls,
-      'sellerId': sellerId,
-      'sellerName': sellerName,
-      'isAvailable': isAvailable,
-      'stockQuantity': stockQuantity,
-      'rating': rating,
-      'reviewCount': reviewCount,
-      'tags': tags,
-      'createdAt': Timestamp.fromDate(createdAt),
-      'updatedAt': Timestamp.fromDate(updatedAt),
-      'stats': stats.toMap(),
-    };
-  }
+  // Firebase integration temporarily disabled
+  // Map<String, dynamic> toFirestore() {
+  //   return {
+  //     'name': name,
+  //     'description': description,
+  //     'price': price,
+  //     'category': category,
+  //     'imageUrls': imageUrls,
+  //     'sellerId': sellerId,
+  //     'sellerName': sellerName,
+  //     'isAvailable': isAvailable,
+  //     'stockQuantity': stockQuantity,
+  //     'rating': rating,
+  //     'reviewCount': reviewCount,
+  //     'tags': tags,
+  //     'createdAt': Timestamp.fromDate(createdAt),
+  //     'updatedAt': Timestamp.fromDate(updatedAt),
+  //     'stats': stats.toMap(),
+  //   };
+  // }
 
   ProductModel copyWith({
     String? name,
