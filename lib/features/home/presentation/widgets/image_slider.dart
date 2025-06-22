@@ -13,11 +13,11 @@ class _ImageSliderState extends State<ImageSlider> {
   int _currentIndex = 0;
   
   final List<String> _imageUrls = [
-    'assets/images/slider1.png',
-    'assets/images/slider2.png',
-    'assets/images/slider3.png',
-    'assets/images/slider4.png',
-    'assets/images/slider5.png',
+    'assets/images/imageSlider.png',
+    'assets/images/EcoCraft.jpeg',
+    'assets/images/ReArt.jpeg',
+    'assets/images/Upcycle.jpeg',
+    'assets/images/upcyclebottle.jpeg',
   ];
 
   @override

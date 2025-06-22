@@ -44,7 +44,7 @@ class WasteCategoryModel {
       WasteCategoryModel(
         id: 'bottles',
         name: 'Bottles',
-        imagePath: 'assets/images/bottle.png',
+        imagePath: 'assets/images/bottles.png',
         description: 'Plastic and glass bottles that can be upcycled',
         projects: [
           UpcyclingProject(
