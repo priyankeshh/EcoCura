@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/services/ml_service.dart';
 import '../../../../shared/models/waste_category_model.dart';
 import '../widgets/ml_result_screen.dart';
 import '../widgets/upcycling_process_screen.dart';
@@ -74,22 +75,18 @@ class _UpcycleScreenState extends ConsumerState<UpcycleScreen> {
     });
 
     try {
-      // TODO: Implement actual ML model processing
-      // For now, simulate analysis with a delay and mock result
-      await Future.delayed(const Duration(seconds: 2));
+      // Initialize ML service if needed
+      final mlService = MLService();
+      await mlService.initialize();
 
-      // Mock analysis result based on common waste types
-      final mockResults = [
-        'Plastic Bottle - Perfect for Bird Feeder project!',
-        'Cardboard Box - Great for Desk Organizer!',
-        'Glass Jar - Ideal for Pen Holder!',
-        'Wooden Pallet - Perfect for Vertical Planter!',
-      ];
+      // Analyze the image using ML service
+      final result = await mlService.analyzeImage(File(image.path));
 
-      final result = mockResults[DateTime.now().millisecond % mockResults.length];
+      // Format the result for display
+      final formattedResult = '${result.label} - ${result.suggestions.first}';
 
       setState(() {
-        _analysisResult = result;
+        _analysisResult = formattedResult;
         _isAnalyzing = false;
       });
 
@@ -152,9 +149,7 @@ class _UpcycleScreenState extends ConsumerState<UpcycleScreen> {
               // Educational Text
               Text(
                 'Plastic takes 1000 years to decompose...',
-                style: AppTextStyles.heading3.copyWith(
-                  textAlign: TextAlign.center,
-                ),
+                style: AppTextStyles.heading3,
                 textAlign: TextAlign.center,
               ),
 

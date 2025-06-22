@@ -125,7 +125,7 @@ class FirebaseService {
   ) async {
     try {
       final ref = storage.ref().child(path).child(fileName);
-      final uploadTask = ref.putData(fileBytes);
+      final uploadTask = ref.putData(Uint8List.fromList(fileBytes));
       final snapshot = await uploadTask;
       return await snapshot.ref.getDownloadURL();
     } catch (e) {

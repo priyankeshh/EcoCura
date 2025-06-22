@@ -165,15 +165,15 @@ class _MarketScreenState extends ConsumerState<MarketScreen> {
 
             const SizedBox(height: 24),
 
-            // Price Range Section
+            // Price Store Section (matching iOS design)
             Text(
-              'Price Range',
+              'Price Store',
               style: AppTextStyles.heading3,
             ),
             const SizedBox(height: 12),
 
             SizedBox(
-              height: 40,
+              height: 100,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: _priceRanges.length,
@@ -182,18 +182,31 @@ class _MarketScreenState extends ConsumerState<MarketScreen> {
                   final isSelected = _selectedPriceRange == priceRange;
 
                   return Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: FilterChip(
-                      label: Text(priceRange.displayName),
-                      selected: isSelected,
-                      onSelected: (selected) {
-                        _onPriceRangeSelected(selected ? priceRange : null);
-                      },
-                      backgroundColor: AppTheme.primaryGreen.withOpacity(0.1),
-                      selectedColor: AppTheme.primaryGreen.withOpacity(0.3),
-                      labelStyle: TextStyle(
-                        color: isSelected ? AppTheme.primaryGreen : AppTheme.darkGreen,
-                        fontWeight: FontWeight.w500,
+                    padding: const EdgeInsets.only(right: 16),
+                    child: GestureDetector(
+                      onTap: () => _onPriceRangeSelected(isSelected ? null : priceRange),
+                      child: Container(
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppTheme.primaryGreen.withOpacity(0.1),
+                          border: Border.all(
+                            color: isSelected ? Colors.yellow : AppTheme.primaryGreen,
+                            width: isSelected ? 3 : 2,
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            priceRange.displayName,
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: isSelected ? AppTheme.primaryGreen : AppTheme.darkGreen,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                       ),
                     ),
                   );
@@ -211,24 +224,25 @@ class _MarketScreenState extends ConsumerState<MarketScreen> {
             const SizedBox(height: 12),
 
             SizedBox(
-              height: 100,
+              height: 140,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: 4,
                 itemBuilder: (context, index) {
-                  final shopNames = [
-                    'Reimagine Decor',
-                    'Second Life Crafter',
-                    'UpCycled Artisans',
-                    'Greener Goods'
+                  final shops = [
+                    {'name': 'Reimagine Decor', 'image': 'assets/images/store.png'},
+                    {'name': 'Second Life Crafter', 'image': 'assets/images/store1.png'},
+                    {'name': 'UpCycled Artisans', 'image': 'assets/images/store2.png'},
+                    {'name': 'Greener Goods', 'image': 'assets/images/store3.png'},
                   ];
 
                   return Padding(
                     padding: const EdgeInsets.only(right: 12),
                     child: Container(
-                      width: 120,
+                      width: 100,
+                      height: 140,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: AppTheme.primaryGreen.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
                           BoxShadow(
@@ -241,19 +255,44 @@ class _MarketScreenState extends ConsumerState<MarketScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(
-                            Icons.store,
-                            size: 40,
-                            color: AppTheme.primaryGreen,
+                          Container(
+                            width: 60,
+                            height: 60,
+                            margin: const EdgeInsets.only(top: 8),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.asset(
+                                shops[index]['image']!,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    color: AppTheme.lightGreen.withOpacity(0.2),
+                                    child: const Icon(
+                                      Icons.store,
+                                      size: 30,
+                                      color: AppTheme.primaryGreen,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                           ),
                           const SizedBox(height: 8),
-                          Text(
-                            shopNames[index],
-                            style: AppTextStyles.bodyMedium,
-                            textAlign: TextAlign.center,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Text(
+                              shops[index]['name']!,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: AppTheme.textPrimary,
+                              ),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
+                          const SizedBox(height: 8),
                         ],
                       ),
                     ),

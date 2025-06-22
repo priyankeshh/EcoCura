@@ -118,11 +118,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 scrollDirection: Axis.horizontal,
                 itemCount: 4,
                 itemBuilder: (context, index) {
-                  final greenites = ['Sales Captain', 'Eco Warrior', 'Green Leader', 'Sustainability Expert'];
+                  final greenites = [
+                    {'name': 'Sales Captain', 'image': 'assets/images/Suryasen.png'},
+                    {'name': 'Eco Warrior', 'image': 'assets/images/Ashi.png'},
+                    {'name': 'Green Leader', 'image': 'assets/images/Garry.png'},
+                    {'name': 'Sustainability Expert', 'image': 'assets/images/Meghana.png'},
+                  ];
                   return Padding(
                     padding: const EdgeInsets.only(right: 12),
                     child: FeaturedGreeniteCard(
-                      name: greenites[index],
+                      name: greenites[index]['name'],
+                      imagePath: greenites[index]['image'],
                     ),
                   );
                 },
