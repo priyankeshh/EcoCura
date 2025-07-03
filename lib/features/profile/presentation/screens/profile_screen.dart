@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../../shared/providers/auth_provider.dart';
 import '../../../../shared/models/user_model.dart';
 import 'my_orders_screen.dart';
@@ -19,12 +20,36 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final currentUserAsync = ref.watch(currentUserProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF0F8F5), // Light green background like in the design
+      backgroundColor: Colors.white,
       body: SafeArea(
-        child: currentUserAsync.when(
-          data: (user) => _buildProfileContent(user),
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (_, __) => _buildProfileContent(null),
+        child: Column(
+          children: [
+            // Header Section with light green background
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+              decoration: const BoxDecoration(
+                color: AppTheme.headerColor,
+              ),
+              child: const Text(
+                'Profile',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.textPrimary,
+                ),
+              ),
+            ),
+
+            // Main Content
+            Expanded(
+              child: currentUserAsync.when(
+                data: (user) => _buildProfileContent(user),
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (_, __) => _buildProfileContent(null),
+              ),
+            ),
+          ],
         ),
       ),
     );
