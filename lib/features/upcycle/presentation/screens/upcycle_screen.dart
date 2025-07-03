@@ -1,13 +1,11 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:go_router/go_router.dart';
+import '../../../../core/services/ml_service_enhanced.dart' as MLEnhanced;
+import 'scan_results_screen.dart';
 import '../../../../core/theme/app_theme.dart';
-import '../../../../core/services/ml_service.dart';
-import '../../../../shared/models/waste_category_model.dart';
-import '../widgets/ml_result_screen.dart';
-import '../widgets/upcycling_process_screen.dart';
 
 class UpcycleScreen extends ConsumerStatefulWidget {
   const UpcycleScreen({super.key});
@@ -19,6 +17,7 @@ class UpcycleScreen extends ConsumerStatefulWidget {
 class _UpcycleScreenState extends ConsumerState<UpcycleScreen> {
   final ImagePicker _picker = ImagePicker();
   File? _selectedImage;
+  Uint8List? _selectedImageBytes;
   String? _analysisResult;
   bool _isAnalyzing = false;
 
@@ -31,8 +30,12 @@ class _UpcycleScreenState extends ConsumerState<UpcycleScreen> {
         imageQuality: 85,
       );
       if (image != null) {
+        final bytes = await image.readAsBytes();
         setState(() {
-          _selectedImage = File(image.path);
+          if (!kIsWeb) {
+            _selectedImage = File(image.path);
+          }
+          _selectedImageBytes = bytes;
         });
         await _processImage(image);
       }
@@ -54,8 +57,12 @@ class _UpcycleScreenState extends ConsumerState<UpcycleScreen> {
         imageQuality: 85,
       );
       if (image != null) {
+        final bytes = await image.readAsBytes();
         setState(() {
-          _selectedImage = File(image.path);
+          if (!kIsWeb) {
+            _selectedImage = File(image.path);
+          }
+          _selectedImageBytes = bytes;
         });
         await _processImage(image);
       }
@@ -76,11 +83,11 @@ class _UpcycleScreenState extends ConsumerState<UpcycleScreen> {
 
     try {
       // Initialize ML service if needed
-      final mlService = MLService();
-      await mlService.initialize();
+      await MLEnhanced.MLService.initialize();
 
       // Analyze the image using ML service
-      final result = await mlService.analyzeImage(File(image.path));
+      final imageBytes = await image.readAsBytes();
+      final result = await MLEnhanced.MLService.classifyWaste(imageBytes);
 
       // Format the result for display
       final formattedResult = '${result.label} - ${result.suggestions.first}';
@@ -92,7 +99,15 @@ class _UpcycleScreenState extends ConsumerState<UpcycleScreen> {
 
       // Navigate to results screen
       if (mounted) {
-        _showResultsScreen();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ScanResultsScreen(
+              imageBytes: imageBytes,
+              result: result,
+            ),
+          ),
+        );
       }
     } catch (e) {
       setState(() {
@@ -107,27 +122,7 @@ class _UpcycleScreenState extends ConsumerState<UpcycleScreen> {
     }
   }
 
-  void _showResultsScreen() {
-    if (_selectedImage != null && _analysisResult != null) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => MLResultScreen(
-            image: _selectedImage!,
-            result: _analysisResult!,
-            onProjectSelected: _navigateToProject,
-          ),
-        ),
-      );
-    }
-  }
 
-  void _navigateToProject(UpcyclingProject project) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => UpcyclingProcessScreen(project: project),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -222,7 +217,7 @@ class _UpcycleScreenState extends ConsumerState<UpcycleScreen> {
             Expanded(
               child: Container(
         decoration: BoxDecoration(
-          color: AppTheme.primaryGreen.withOpacity(0.05),
+          color: AppTheme.primaryGreen.withValues(alpha: 0.05),
         ),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -254,9 +249,9 @@ class _UpcycleScreenState extends ConsumerState<UpcycleScreen> {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: _selectedImage != null
-                      ? Image.file(
-                          _selectedImage!,
+                  child: _selectedImageBytes != null
+                      ? Image.memory(
+                          _selectedImageBytes!,
                           fit: BoxFit.cover,
                         )
                       : Image.asset(
@@ -264,7 +259,7 @@ class _UpcycleScreenState extends ConsumerState<UpcycleScreen> {
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
                             return Container(
-                              color: AppTheme.lightGreen.withOpacity(0.3),
+                              color: AppTheme.lightGreen.withValues(alpha: 0.3),
                               child: const Icon(
                                 Icons.recycling,
                                 size: 60,

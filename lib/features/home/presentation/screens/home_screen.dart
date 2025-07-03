@@ -85,6 +85,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
                   // Subtitle with eco message
                   Container(
+                    width: double.infinity,
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     decoration: BoxDecoration(
                       color: Colors.white.withValues(alpha: 0.9),
@@ -97,6 +98,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         color: AppTheme.textSecondary,
                         fontStyle: FontStyle.italic,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ],
@@ -116,66 +118,67 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       padding: const EdgeInsets.all(20),
                       margin: const EdgeInsets.only(bottom: 24),
                       decoration: BoxDecoration(
-                        color: AppTheme.lightGreen.withValues(alpha: 0.3),
+                        color: AppTheme.lightGreen.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: AppTheme.primaryGreen.withValues(alpha: 0.3),
+                          width: 1,
+                        ),
                       ),
                       child: Column(
                         children: [
                           // Circular Process Diagram
-                          Container(
+                          SizedBox(
                             height: 120,
                             child: Stack(
                               alignment: Alignment.center,
                               children: [
                                 // Center icon
                                 Container(
-                                  width: 40,
-                                  height: 40,
-                                  decoration: BoxDecoration(
+                                  width: 50,
+                                  height: 50,
+                                  decoration: const BoxDecoration(
                                     color: AppTheme.primaryGreen,
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
                                     Icons.recycling,
                                     color: Colors.white,
-                                    size: 20,
+                                    size: 24,
                                   ),
                                 ),
                                 // Process steps around the circle
                                 Positioned(
-                                  top: 10,
+                                  top: 5,
                                   child: _buildProcessStep('🎨', 'UpCycling'),
                                 ),
                                 Positioned(
-                                  right: 10,
-                                  child: _buildProcessStep('💡', 'Imagination'),
+                                  right: 5,
+                                  child: _buildProcessStep('💡', 'Ideas'),
                                 ),
                                 Positioned(
-                                  bottom: 10,
-                                  child: _buildProcessStep('🌱', 'Green Impact'),
+                                  bottom: 5,
+                                  child: _buildProcessStep('🌱', 'Impact'),
                                 ),
                                 Positioned(
-                                  left: 10,
+                                  left: 5,
                                   child: _buildProcessStep('♻️', 'Recycle'),
                                 ),
                               ],
                             ),
                           ),
 
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 16),
 
-                          // Dots indicator
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(3, (index) => Container(
-                              width: 8,
-                              height: 8,
-                              margin: const EdgeInsets.symmetric(horizontal: 4),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: index == 0 ? AppTheme.primaryGreen : Colors.grey[300],
-                              ),
-                            )),
+                          // Process description
+                          const Text(
+                            'Transform waste into wonderful creations',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: AppTheme.textSecondary,
+                              fontStyle: FontStyle.italic,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
                         ],
                       ),
@@ -202,23 +205,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Waste Categories Grid (2x2)
-                    GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 12,
-                        mainAxisSpacing: 12,
-                        childAspectRatio: 1.0,
+                    // Waste Categories Horizontal Scroll
+                    SizedBox(
+                      height: 140,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: _wasteCategories.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 12),
+                            child: SizedBox(
+                              width: 120,
+                              child: WasteCategoryCard(
+                                category: _wasteCategories[index],
+                                onTap: () => _onCategoryTap(_wasteCategories[index]),
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                      itemCount: _wasteCategories.length > 4 ? 4 : _wasteCategories.length,
-                      itemBuilder: (context, index) {
-                        return WasteCategoryCard(
-                          category: _wasteCategories[index],
-                          onTap: () => _onCategoryTap(_wasteCategories[index]),
-                        );
-                      },
                     ),
 
                     const SizedBox(height: 32),
@@ -268,29 +273,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Popular Products Grid (2x2)
+                    // Popular Products Horizontal Scroll
                     popularProductsAsync.when(
                       data: (products) {
                         final displayProducts = products.isEmpty
                             ? ProductService.getSampleProducts()
                             : products;
 
-                        return GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 12,
-                            mainAxisSpacing: 12,
-                            childAspectRatio: 0.8,
+                        return SizedBox(
+                          height: 200,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: displayProducts.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 12),
+                                child: SizedBox(
+                                  width: 150,
+                                  child: PopularProductCard(
+                                    product: displayProducts[index],
+                                    onTap: () => _onProductTap(displayProducts[index]),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
-                          itemCount: displayProducts.length > 4 ? 4 : displayProducts.length,
-                          itemBuilder: (context, index) {
-                            return PopularProductCard(
-                              product: displayProducts[index],
-                              onTap: () => _onProductTap(displayProducts[index]),
-                            );
-                          },
                         );
                       },
                       loading: () => const SizedBox(
@@ -299,22 +306,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                       error: (error, stack) {
                         final sampleProducts = ProductService.getSampleProducts();
-                        return GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 12,
-                            mainAxisSpacing: 12,
-                            childAspectRatio: 0.8,
+                        return SizedBox(
+                          height: 200,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: sampleProducts.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 12),
+                                child: SizedBox(
+                                  width: 150,
+                                  child: PopularProductCard(
+                                    product: sampleProducts[index],
+                                    onTap: () => _onProductTap(sampleProducts[index]),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
-                          itemCount: sampleProducts.length > 4 ? 4 : sampleProducts.length,
-                          itemBuilder: (context, index) {
-                            return PopularProductCard(
-                              product: sampleProducts[index],
-                              onTap: () => _onProductTap(sampleProducts[index]),
-                            );
-                          },
                         );
                       },
                     ),

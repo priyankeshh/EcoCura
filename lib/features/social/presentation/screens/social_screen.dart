@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../shared/models/social_models.dart';
 import '../../../../shared/providers/auth_provider.dart';
-import '../../../../shared/widgets/theme_toggle_widget.dart';
 import '../widgets/comments_screen.dart';
 
 class SocialScreen extends ConsumerStatefulWidget {
@@ -49,15 +48,9 @@ class _SocialScreenState extends ConsumerState<SocialScreen> {
                       color: AppTheme.textPrimary,
                     ),
                   ),
-                  Row(
-                    children: [
-                      const QuickThemeToggle(),
-                      const SizedBox(width: 8),
-                      IconButton(
-                        icon: const Icon(Icons.add, color: AppTheme.textPrimary),
-                        onPressed: _showCreatePostDialog,
-                      ),
-                    ],
+                  IconButton(
+                    icon: const Icon(Icons.add, color: AppTheme.textPrimary),
+                    onPressed: _showCreatePostDialog,
                   ),
                 ],
               ),
@@ -231,6 +224,11 @@ class _SocialScreenState extends ConsumerState<SocialScreen> {
   Widget _buildPostCard(GreenityPost post) {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
+      color: Colors.white,
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -439,32 +437,90 @@ class _SocialScreenState extends ConsumerState<SocialScreen> {
   }
 
   void _showCreatePostDialog() {
+    final titleController = TextEditingController();
     final contentController = TextEditingController();
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Create Post'),
-        content: TextField(
-          controller: contentController,
-          maxLines: 3,
-          decoration: const InputDecoration(
-            hintText: 'What\'s on your mind?',
-            border: OutlineInputBorder(),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        title: Row(
+          children: [
+            Icon(Icons.create, color: AppTheme.primaryGreen),
+            const SizedBox(width: 8),
+            const Text(
+              'Create Post',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Title field
+              TextField(
+                controller: titleController,
+                decoration: InputDecoration(
+                  labelText: 'Post Title',
+                  hintText: 'Enter a catchy title...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  prefixIcon: const Icon(Icons.title),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Content field
+              TextField(
+                controller: contentController,
+                maxLines: 4,
+                decoration: InputDecoration(
+                  labelText: 'Description',
+                  hintText: 'Share your eco-friendly thoughts...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  prefixIcon: const Icon(Icons.description),
+                ),
+              ),
+            ],
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: Colors.grey),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
-              if (contentController.text.isNotEmpty) {
-                _createPost(contentController.text);
+              if (titleController.text.isNotEmpty && contentController.text.isNotEmpty) {
+                _createPost(titleController.text, contentController.text);
                 Navigator.of(context).pop();
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Please fill in both title and description')),
+                );
               }
             },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.primaryGreen,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
             child: const Text('Post'),
           ),
         ],
@@ -472,12 +528,12 @@ class _SocialScreenState extends ConsumerState<SocialScreen> {
     );
   }
 
-  void _createPost(String content) {
+  void _createPost(String title, String content) {
     final newPost = GreenityPost(
       id: 'post_${DateTime.now().millisecondsSinceEpoch}',
       userId: 'current_user',
       userName: 'You',
-      content: content,
+      content: '$title\n\n$content',
       createdAt: DateTime.now(),
     );
 
