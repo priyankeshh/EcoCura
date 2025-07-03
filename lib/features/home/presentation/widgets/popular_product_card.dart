@@ -95,7 +95,7 @@ class PopularProductCard extends StatelessWidget {
                     Text(
                       product.name,
                       style: const TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                         fontWeight: FontWeight.w600,
                         color: AppTheme.textPrimary,
                       ),
@@ -104,19 +104,19 @@ class PopularProductCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
 
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 2),
 
                     // Price
                     Text(
                       '₹${product.price.toInt()}',
                       style: const TextStyle(
-                        fontSize: 12,
+                        fontSize: 11,
                         color: AppTheme.textSecondary,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
 
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 4),
 
                     // Buy Button
                     SizedBox(
