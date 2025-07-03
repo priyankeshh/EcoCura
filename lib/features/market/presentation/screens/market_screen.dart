@@ -69,22 +69,43 @@ class _MarketScreenState extends ConsumerState<MarketScreen> {
     final productsAsync = ref.watch(productsProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Market'),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.filter_list),
-            onPressed: _showFilterDialog,
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+      backgroundColor: Colors.white,
+      body: SafeArea(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Header Section with light green background
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+              decoration: const BoxDecoration(
+                color: AppTheme.headerColor,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Market',
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.textPrimary,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.filter_list, color: AppTheme.textPrimary),
+                    onPressed: _showFilterDialog,
+                  ),
+                ],
+              ),
+            ),
+
+            // Main Content
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
             // Search Bar
             CustomSearchBar(
               controller: _searchController,
@@ -101,8 +122,8 @@ class _MarketScreenState extends ConsumerState<MarketScreen> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    AppTheme.primaryGreen.withOpacity(0.8),
-                    AppTheme.lightGreen.withOpacity(0.6),
+                    AppTheme.primaryGreen.withValues(alpha: 0.8),
+                    AppTheme.lightGreen.withValues(alpha: 0.6),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(12),
@@ -333,6 +354,10 @@ class _MarketScreenState extends ConsumerState<MarketScreen> {
                 final filteredSamples = _filterProducts(sampleProducts);
                 return _buildProductGrid(filteredSamples);
               },
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),

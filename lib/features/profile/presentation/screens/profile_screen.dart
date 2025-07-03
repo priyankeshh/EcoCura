@@ -60,18 +60,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          // App Title
-          const SizedBox(height: 16),
-          const Text(
-            'Profile',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-
-          const SizedBox(height: 40),
+          const SizedBox(height: 24),
 
           // Profile Picture with green border (matching the design)
           Container(
