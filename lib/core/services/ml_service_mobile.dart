@@ -1,51 +1,107 @@
+// Mobile-specific ML service with real TensorFlow Lite integration
+// Use this when you want to enable real ML inference on mobile platforms
+
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:image/image.dart' as img;
+// Uncomment when ready for mobile ML:
+// import 'package:tflite_flutter/tflite_flutter.dart';
 
-class MLService {
+class MLServiceMobile {
+  // static Interpreter? _interpreter;
   static List<String>? _labels;
   static bool _isInitialized = false;
 
-  // Initialize the ML model (web-compatible)
   static Future<void> initialize() async {
     if (_isInitialized) return;
 
     try {
+      // Load the model - uncomment when ready
+      // _interpreter = await Interpreter.fromAsset('assets/ml_models/model.tflite');
+      
       // Load labels
       final labelsData = await rootBundle.loadString('assets/ml_models/labels.txt');
       _labels = labelsData.split('\n').where((label) => label.isNotEmpty).toList();
-
+      
       _isInitialized = true;
       if (kDebugMode) {
-        print('ML Service initialized with mock data');
+        print('Mobile ML Service initialized');
       }
     } catch (e) {
       if (kDebugMode) {
-        print('Failed to initialize ML Service: $e');
+        print('Failed to initialize Mobile ML Service: $e');
       }
       _isInitialized = false;
     }
   }
 
-  // Classify waste from image bytes (web-compatible with mock data)
   static Future<WasteDetectionResult> classifyWaste(Uint8List imageBytes) async {
     if (!_isInitialized) {
       await initialize();
     }
 
-    // For web compatibility, always use mock results
-    // On mobile platforms, you can integrate real TensorFlow Lite here
-    if (kIsWeb) {
+    // For now, return mock data
+    // When ready, implement real inference here
+    return _getMockResult();
+    
+    /* Real implementation would be:
+    try {
+      final input = _preprocessImage(imageBytes);
+      final output = [List.filled(_labels!.length, 0.0)];
+      _interpreter!.run(input, output);
+      return _processResults(output[0]);
+    } catch (e) {
       return _getMockResult();
     }
-
-    // For mobile platforms, you would implement real ML inference here
-    // For now, using mock data for all platforms
-    return _getMockResult();
+    */
   }
 
+  static List<List<List<List<double>>>> _preprocessImage(Uint8List imageBytes) {
+    img.Image? image = img.decodeImage(imageBytes);
+    if (image == null) throw Exception('Failed to decode image');
 
+    img.Image resizedImage = img.copyResize(image, width: 224, height: 224);
 
-  // Get upcycling suggestions based on detected waste type
+    List<List<List<double>>> imageMatrix = [];
+    for (int y = 0; y < 224; y++) {
+      List<List<double>> row = [];
+      for (int x = 0; x < 224; x++) {
+        img.Pixel pixel = resizedImage.getPixel(x, y);
+        row.add([
+          pixel.r / 255.0,
+          pixel.g / 255.0, 
+          pixel.b / 255.0,
+        ]);
+      }
+      imageMatrix.add(row);
+    }
+
+    return [imageMatrix];
+  }
+
+  static WasteDetectionResult _processResults(List<double> output) {
+    double maxConfidence = 0.0;
+    int maxIndex = 0;
+    
+    for (int i = 0; i < output.length; i++) {
+      if (output[i] > maxConfidence) {
+        maxConfidence = output[i];
+        maxIndex = i;
+      }
+    }
+
+    final label = _labels![maxIndex];
+    final suggestions = _getUpcyclingSuggestions(label);
+
+    return WasteDetectionResult(
+      label: label,
+      confidence: maxConfidence,
+      suggestions: suggestions,
+    );
+  }
+
   static List<String> _getUpcyclingSuggestions(String wasteType) {
     final suggestions = {
       'plastic_bottle': [
@@ -82,19 +138,20 @@ class MLService {
     ];
   }
 
-  // Mock result for development/fallback
   static WasteDetectionResult _getMockResult() {
     final mockLabels = ['Plastic Bottle', 'Cardboard Box', 'Tin Can', 'Toilet Paper Roll', 'Fabric'];
     final randomLabel = mockLabels[DateTime.now().millisecond % mockLabels.length];
-
+    
     return WasteDetectionResult(
       label: randomLabel,
-      confidence: 0.85 + (DateTime.now().millisecond % 15) / 100, // Random confidence 0.85-0.99
+      confidence: 0.85 + (DateTime.now().millisecond % 15) / 100,
       suggestions: _getUpcyclingSuggestions(randomLabel.toLowerCase().replaceAll(' ', '_')),
     );
   }
 
   static void dispose() {
+    // _interpreter?.close();
+    // _interpreter = null;
     _labels = null;
     _isInitialized = false;
   }

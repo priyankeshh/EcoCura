@@ -241,7 +241,7 @@ class _UpcycleScreenState extends ConsumerState<UpcycleScreen> {
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: Colors.black.withValues(alpha: 0.1),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -301,7 +301,7 @@ class _UpcycleScreenState extends ConsumerState<UpcycleScreen> {
                         icon: const Icon(Icons.photo_library),
                         label: const Text('Photo Library'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppTheme.primaryGreen.withOpacity(0.9),
+                          backgroundColor: AppTheme.primaryGreen.withValues(alpha: 0.9),
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -321,7 +321,7 @@ class _UpcycleScreenState extends ConsumerState<UpcycleScreen> {
                         icon: const Icon(Icons.camera_alt),
                         label: const Text('Camera'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppTheme.primaryGreen.withOpacity(0.9),
+                          backgroundColor: AppTheme.primaryGreen.withValues(alpha: 0.9),
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
