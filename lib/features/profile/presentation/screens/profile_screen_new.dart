@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../../shared/providers/auth_provider.dart';
 import '../../../../shared/models/user_model.dart';
-import 'my_orders_screen.dart';
-import 'my_store_screen.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -36,11 +35,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       child: Column(
         children: [
           // App Title
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           const Text(
             'Profile',
             style: TextStyle(
-              fontSize: 28,
+              fontSize: 32,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
@@ -48,14 +47,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
           const SizedBox(height: 40),
 
-          // Profile Picture with green border (matching the design)
+          // Profile Picture with green border
           Container(
             width: 120,
             height: 120,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
-                color: const Color(0xFF4CAF50), // Green outer border
+                color: const Color(0xFF4CAF50), // Green border
                 width: 4,
               ),
             ),
@@ -78,7 +77,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 child: user?.profileImageUrl == null
                     ? const Icon(
                         Icons.person,
-                        size: 50,
+                        size: 60,
                         color: Color(0xFF8D6E63), // Brown icon
                       )
                     : null,
@@ -92,7 +91,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           Text(
             'Hi ${user?.name ?? 'Gracy'}',
             style: const TextStyle(
-              fontSize: 22,
+              fontSize: 24,
               fontWeight: FontWeight.w600,
               color: Colors.black87,
             ),
@@ -100,21 +99,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
           const SizedBox(height: 32),
 
-          // Action Buttons Grid (2x2) - matching the design
+          // Action Buttons Grid (2x2)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _buildGreenButton('My Orders', () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const MyOrdersScreen()),
-                );
+                context.push('/orders');
               }),
               _buildGreenButton('My Store', () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const MyStoreScreen()),
-                );
+                context.push('/my-store');
               }),
             ],
           ),
@@ -125,16 +118,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _buildGreenButton('Wishlist', () {
-                // Add wishlist navigation when screen is available
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Wishlist feature coming soon!')),
-                );
+                context.push('/wishlist');
               }),
               _buildGreenButton('Help Center', () {
-                // Add help center navigation when screen is available
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Help Center feature coming soon!')),
-                );
+                context.push('/help');
               }),
             ],
           ),
@@ -150,33 +137,23 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             child: Column(
               children: [
                 _buildListOption('Edit Profile', Icons.arrow_forward_ios, () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Edit Profile feature coming soon!')),
-                  );
+                  context.push('/edit-profile');
                 }),
                 _buildDivider(),
                 _buildListOption('Saved Addresses', Icons.arrow_forward_ios, () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Saved Addresses feature coming soon!')),
-                  );
+                  context.push('/addresses');
                 }),
                 _buildDivider(),
                 _buildListOption('Payment Options', Icons.arrow_forward_ios, () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Payment Options feature coming soon!')),
-                  );
+                  context.push('/payment');
                 }),
                 _buildDivider(),
                 _buildListOption('Select Language', Icons.arrow_forward_ios, () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Language Selection feature coming soon!')),
-                  );
+                  context.push('/language');
                 }),
                 _buildDivider(),
                 _buildListOption('Accessibility', Icons.arrow_forward_ios, () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Accessibility feature coming soon!')),
-                  );
+                  context.push('/accessibility');
                 }),
               ],
             ),
@@ -217,22 +194,22 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   Widget _buildGreenButton(String title, VoidCallback onPressed) {
     return Container(
-      width: 135,
-      height: 50,
+      width: 140,
+      height: 60,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF81C784), // Slightly lighter green to match screenshot
-          foregroundColor: Colors.white,
+          backgroundColor: const Color(0xFF8BC34A), // Light green
+          foregroundColor: const Color(0xFF2E7D32), // Dark green text
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
+            borderRadius: BorderRadius.circular(30),
           ),
           elevation: 0,
         ),
         child: Text(
           title,
           style: const TextStyle(
-            fontSize: 13,
+            fontSize: 14,
             fontWeight: FontWeight.w600,
           ),
           textAlign: TextAlign.center,

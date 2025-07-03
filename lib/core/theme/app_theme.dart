@@ -2,22 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // Enhanced EcoCura Color Palette - Vibrant & Eco-Friendly
-  static const Color primaryGreen = Color(0xFF2E7D32);      // Rich forest green
-  static const Color lightGreen = Color(0xFF4CAF50);        // Bright eco green
-  static const Color darkGreen = Color(0xFF1B5E20);         // Deep forest
-  static const Color accentGreen = Color(0xFF66BB6A);       // Fresh mint
-  static const Color leafGreen = Color(0xFF8BC34A);         // Natural leaf
+  // Clean White & Green Design - Modern & Fresh
+  static const Color primaryGreen = Color(0xFF4CAF50);      // Clean bright green
+  static const Color lightGreen = Color(0xFFC8E6C9);        // Very light green
+  static const Color darkGreen = Color(0xFF2E7D32);         // Darker green for contrast
+  static const Color accentGreen = Color(0xFF81C784);       // Soft green accent
+  static const Color leafGreen = Color(0xFFA5D6A7);         // Gentle leaf green
 
-  // Background & Surface Colors
-  static const Color backgroundColor = Color(0xFFF8FFF8);    // Very light green tint
-  static const Color cardColor = Color(0xFFFFFFFF);
-  static const Color surfaceColor = Color(0xFFF1F8E9);      // Subtle green surface
+  // Background & Surface Colors - Clean White Design
+  static const Color backgroundColor = Color(0xFFFFFFFF);    // Pure white background
+  static const Color cardColor = Color(0xFFFFFFFF);         // White cards
+  static const Color surfaceColor = Color(0xFFF1F8E9);      // Very light green surface
+  static const Color headerColor = Color(0xFFC8E6C9);       // Light green header
 
-  // Text Colors
-  static const Color textPrimary = Color(0xFF1B5E20);       // Dark green text
-  static const Color textSecondary = Color(0xFF4E7C59);     // Medium green text
-  static const Color textLight = Color(0xFF81C784);         // Light green text
+  // Text Colors - Better Contrast
+  static const Color textPrimary = Color(0xFF212121);       // Dark gray text
+  static const Color textSecondary = Color(0xFF757575);     // Medium gray text
+  static const Color textLight = Color(0xFF9E9E9E);         // Light gray text
 
   // Accent Colors
   static const Color warningColor = Color(0xFFFF9800);      // Orange for warnings
@@ -32,7 +33,7 @@ class AppTheme {
         brightness: Brightness.light,
         primary: primaryGreen,
         secondary: accentGreen,
-        surface: cardColor,
+        surface: backgroundColor,
         onPrimary: Colors.white,
         onSecondary: Colors.white,
         onSurface: textPrimary,
@@ -46,15 +47,15 @@ class AppTheme {
         bodyMedium: GoogleFonts.poppins(color: textSecondary),
       ),
 
-      // AppBar Theme - Eco-friendly gradient
+      // AppBar Theme - Clean light green header
       appBarTheme: AppBarTheme(
-        backgroundColor: primaryGreen,
-        foregroundColor: Colors.white,
+        backgroundColor: headerColor,
+        foregroundColor: textPrimary,
         elevation: 0,
-        centerTitle: true,
+        centerTitle: false,
         titleTextStyle: GoogleFonts.poppins(
-          color: Colors.white,
-          fontSize: 20,
+          color: textPrimary,
+          fontSize: 24,
           fontWeight: FontWeight.w600,
         ),
       ),
