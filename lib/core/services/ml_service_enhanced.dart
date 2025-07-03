@@ -16,7 +16,11 @@ class MLService {
 
       _isInitialized = true;
       if (kDebugMode) {
-        print('ML Service initialized with mock data');
+        if (kIsWeb) {
+          print('ML Service initialized with mock data (Web platform - TensorFlow Lite not supported)');
+        } else {
+          print('ML Service initialized - Ready for real model on mobile platform');
+        }
       }
     } catch (e) {
       if (kDebugMode) {
@@ -48,30 +52,25 @@ class MLService {
   // Get upcycling suggestions based on detected waste type
   static List<String> _getUpcyclingSuggestions(String wasteType) {
     final suggestions = {
-      'plastic_bottle': [
-        'Create a Bird Feeder - Cut holes and add perches',
-        'Make a Planter - Perfect for herbs and small plants',
-        'DIY Pen Holder - Organize your desk supplies',
+      'plastic bottles': [
+        'Bird Feeder - Cut holes and add perches for birds',
+        'Planter Pot - Perfect container for herbs and small plants',
+        'Pen Holder - Organize desk supplies and stationery',
       ],
-      'cardboard_box': [
-        'Build a Desk Organizer - Multiple compartments',
-        'Create Storage Solutions - Decorative boxes',
-        'Make a Cat House - Fun project for pets',
+      'wood': [
+        'Bookshelf - Create simple shelving for storage',
+        'Picture Frame - Make custom frames for photos',
+        'Garden Planter Box - Build raised beds for plants',
       ],
-      'tin_can': [
-        'Craft a Lantern - Add holes for light patterns',
-        'Make a Pen Holder - Wrap with decorative paper',
-        'Create a Planter - Great for succulents',
+      'cardboard': [
+        'Storage Organizer - Multiple compartments for items',
+        'Cat House - Fun shelter project for pets',
+        'Desk Organizer - Sort papers and office supplies',
       ],
-      'toilet_paper_roll': [
-        'Organize Cables - Perfect cord management',
-        'Make Seedling Pots - Biodegradable planters',
-        'Create Bird Feeders - Cover with peanut butter',
-      ],
-      'fabric': [
-        'Sew a Tote Bag - Reusable shopping bag',
-        'Make Cleaning Rags - Cut into useful sizes',
-        'Create Plant Ties - Soft support for plants',
+      'tin cans': [
+        'Lantern - Add holes for beautiful light patterns',
+        'Pencil Holder - Wrap with decorative paper',
+        'Succulent Planter - Perfect size for small plants',
       ],
     };
 
@@ -84,13 +83,13 @@ class MLService {
 
   // Mock result for development/fallback
   static WasteDetectionResult _getMockResult() {
-    final mockLabels = ['Plastic Bottle', 'Cardboard Box', 'Tin Can', 'Toilet Paper Roll', 'Fabric'];
+    final mockLabels = ['Plastic Bottles', 'Wood', 'Cardboard', 'Tin cans'];
     final randomLabel = mockLabels[DateTime.now().millisecond % mockLabels.length];
 
     return WasteDetectionResult(
       label: randomLabel,
       confidence: 0.85 + (DateTime.now().millisecond % 15) / 100, // Random confidence 0.85-0.99
-      suggestions: _getUpcyclingSuggestions(randomLabel.toLowerCase().replaceAll(' ', '_')),
+      suggestions: _getUpcyclingSuggestions(randomLabel),
     );
   }
 

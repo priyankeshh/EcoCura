@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/services/ml_service_enhanced.dart';
+import '../../../../core/services/youtube_service.dart';
 
 class ScanResultsScreen extends StatelessWidget {
   final Uint8List imageBytes;
@@ -149,7 +149,7 @@ class ScanResultsScreen extends StatelessWidget {
                     ...result.suggestions.asMap().entries.map((entry) {
                       final index = entry.key;
                       final suggestion = entry.value;
-                      return _buildSuggestionCard(context, index + 1, suggestion);
+                      return _buildSuggestionCard(context, index + 1, suggestion, result.label);
                     }).toList(),
 
                     const SizedBox(height: 24),
@@ -200,88 +200,254 @@ class ScanResultsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSuggestionCard(BuildContext context, int number, String suggestion) {
+  Widget _buildSuggestionCard(BuildContext context, int number, String suggestion, String wasteType) {
     final parts = suggestion.split(' - ');
     final title = parts.isNotEmpty ? parts[0] : suggestion;
     final description = parts.length > 1 ? parts[1] : '';
 
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 32,
-            height: 32,
-            decoration: BoxDecoration(
-              color: AppTheme.primaryGreen,
-              shape: BoxShape.circle,
+    return GestureDetector(
+      onTap: () => _showTutorials(context, wasteType, title),
+      child: Container(
+        width: double.infinity,
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
             ),
-            child: Center(
-              child: Text(
-                '$number',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 32,
+              height: 32,
+              decoration: const BoxDecoration(
+                color: AppTheme.primaryGreen,
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Text(
+                  '$number',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.textPrimary,
-                  ),
-                ),
-                if (description.isNotEmpty) ...[
-                  const SizedBox(height: 4),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Text(
-                    description,
+                    title,
                     style: const TextStyle(
-                      fontSize: 14,
-                      color: AppTheme.textSecondary,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.textPrimary,
+                    ),
+                  ),
+                  if (description.isNotEmpty) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      description,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: AppTheme.textSecondary,
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 4),
+                  const Text(
+                    'Tap to see tutorials',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppTheme.primaryGreen,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
-              ],
+              ),
             ),
+            const Icon(
+              Icons.play_circle_fill,
+              color: AppTheme.primaryGreen,
+              size: 24,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showTutorials(BuildContext context, String wasteType, String projectName) async {
+    final tutorials = await YouTubeService.searchTutorials(wasteType, projectName);
+
+    if (!context.mounted) return;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: 0.7,
+        maxChildSize: 0.9,
+        minChildSize: 0.5,
+        builder: (context, scrollController) => Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
-          Icon(
-            Icons.arrow_forward_ios,
-            size: 16,
-            color: AppTheme.textSecondary,
+          child: Column(
+            children: [
+              // Handle bar
+              Container(
+                width: 40,
+                height: 4,
+                margin: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+
+              // Header
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  children: [
+                    const Icon(Icons.play_circle_fill, color: Colors.red, size: 28),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        'How to make $projectName',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.close),
+                    ),
+                  ],
+                ),
+              ),
+
+              const Divider(),
+
+              // Tutorials list
+              Expanded(
+                child: ListView.builder(
+                  controller: scrollController,
+                  padding: const EdgeInsets.all(20),
+                  itemCount: tutorials.length,
+                  itemBuilder: (context, index) {
+                    final tutorial = tutorials[index];
+                    return _buildTutorialCard(tutorial);
+                  },
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTutorialCard(YouTubeTutorial tutorial) {
+    return GestureDetector(
+      onTap: () => YouTubeService.openTutorial(tutorial.url),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Thumbnail
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+              child: AspectRatio(
+                aspectRatio: 16 / 9,
+                child: Image.network(
+                  tutorial.thumbnailUrl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    color: Colors.grey[200],
+                    child: const Icon(Icons.play_circle_fill, size: 50, color: Colors.red),
+                  ),
+                ),
+              ),
+            ),
+
+            // Content
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    tutorial.title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    tutorial.channelName,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      const Icon(Icons.play_arrow, color: Colors.red, size: 16),
+                      const SizedBox(width: 4),
+                      const Text(
+                        'Watch Tutorial',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   void _searchYouTubeTutorials(String itemType) async {
-    final query = 'upcycle $itemType DIY tutorial';
-    final url = 'https://www.youtube.com/results?search_query=${Uri.encodeComponent(query)}';
-    
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-    }
+    await YouTubeService.openTutorial(
+      'https://www.youtube.com/results?search_query=${Uri.encodeComponent('upcycle $itemType DIY tutorial')}'
+    );
   }
 
   void _goToMarketplace(BuildContext context) {
