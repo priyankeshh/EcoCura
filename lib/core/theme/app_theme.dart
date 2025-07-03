@@ -58,7 +58,7 @@ class AppTheme {
           fontWeight: FontWeight.w600,
         ),
       ),
-      
+
       // Card Theme - Enhanced for presentation
       cardTheme: CardThemeData(
         color: cardColor,
@@ -68,7 +68,7 @@ class AppTheme {
           borderRadius: BorderRadius.circular(16),
         ),
       ),
-      
+
       // Button Themes - Enhanced for presentation
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -94,7 +94,7 @@ class AppTheme {
         elevation: 4,
       ),
 
-      // Input Decoration Theme
+      // Input Decoration Theme - Fixed for better text visibility
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
@@ -109,7 +109,10 @@ class AppTheme {
           borderSide: const BorderSide(color: primaryGreen),
         ),
         filled: true,
-        fillColor: Colors.grey[50],
+        fillColor: Colors.white,
+        // Explicitly set text colors for better visibility
+        labelStyle: const TextStyle(color: textSecondary),
+        hintStyle: TextStyle(color: Colors.grey[600]),
       ),
       
       // Scaffold Background
@@ -123,8 +126,66 @@ class AppTheme {
       colorScheme: ColorScheme.fromSeed(
         seedColor: primaryGreen,
         brightness: Brightness.dark,
+        primary: primaryGreen,
+        secondary: accentGreen,
+        surface: const Color(0xFF1E1E1E),
+        onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onSurface: Colors.white,
       ),
-      textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
+      textTheme: GoogleFonts.poppinsTextTheme(ThemeData.dark().textTheme).copyWith(
+        displayLarge: GoogleFonts.poppins(color: Colors.white, fontWeight: FontWeight.bold),
+        displayMedium: GoogleFonts.poppins(color: Colors.white, fontWeight: FontWeight.w600),
+        headlineLarge: GoogleFonts.poppins(color: Colors.white, fontWeight: FontWeight.w600),
+        headlineMedium: GoogleFonts.poppins(color: Colors.white, fontWeight: FontWeight.w500),
+        bodyLarge: GoogleFonts.poppins(color: Colors.white),
+        bodyMedium: GoogleFonts.poppins(color: Colors.white70),
+      ),
+
+      // AppBar Theme for dark mode
+      appBarTheme: AppBarTheme(
+        backgroundColor: primaryGreen,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+        titleTextStyle: GoogleFonts.poppins(
+          color: Colors.white,
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+
+      // Card Theme for dark mode
+      cardTheme: CardThemeData(
+        color: const Color(0xFF2D2D2D),
+        elevation: 3,
+        shadowColor: primaryGreen.withValues(alpha: 0.2),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
+
+      // Input Decoration Theme for dark mode - Fixed for better text visibility
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: Colors.grey),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: Colors.grey),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: primaryGreen),
+        ),
+        filled: true,
+        fillColor: const Color(0xFF2D2D2D),
+        // Explicitly set text colors for dark mode
+        labelStyle: const TextStyle(color: Colors.white70),
+        hintStyle: const TextStyle(color: Colors.white54),
+      ),
+
       scaffoldBackgroundColor: const Color(0xFF121212),
     );
   }
@@ -137,31 +198,31 @@ class AppTextStyles {
     fontWeight: FontWeight.bold,
     color: AppTheme.textPrimary,
   );
-  
+
   static const TextStyle heading2 = TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.w600,
     color: AppTheme.textPrimary,
   );
-  
+
   static const TextStyle heading3 = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w600,
     color: AppTheme.textPrimary,
   );
-  
+
   static const TextStyle bodyLarge = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.normal,
     color: AppTheme.textPrimary,
   );
-  
+
   static const TextStyle bodyMedium = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.normal,
     color: AppTheme.textSecondary,
   );
-  
+
   static const TextStyle caption = TextStyle(
     fontSize: 12,
     fontWeight: FontWeight.normal,

@@ -2,16 +2,34 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/user_model.dart';
 import '../../core/services/firebase_service.dart';
+import '../../app.dart';
+import 'mock_auth_provider.dart';
 
 // Auth state provider
 final authStateProvider = StreamProvider<User?>((ref) {
+  if (kDemoMode) {
+    return Stream.value(MockUser());
+  }
   return FirebaseAuth.instance.authStateChanges();
 });
 
 // Current user provider
 final currentUserProvider = StreamProvider<UserModel?>((ref) {
+  if (kDemoMode) {
+    return Stream.value(UserModel(
+      id: 'demo_user',
+      name: 'Demo User',
+      email: 'demo@ecocura.com',
+      tier: UserTier.silver,
+      points: 750,
+      pointsToNextTier: 250,
+      createdAt: DateTime.now().subtract(const Duration(days: 30)),
+      updatedAt: DateTime.now(),
+    ));
+  }
+
   final authState = ref.watch(authStateProvider);
-  
+
   return authState.when(
     data: (user) {
       if (user == null) return Stream.value(null);
@@ -39,6 +57,10 @@ class AuthService {
     String email,
     String password,
   ) async {
+    if (kDemoMode) {
+      return await MockAuthService.signInWithEmailAndPassword(email, password);
+    }
+
     try {
       final credential = await _auth.signInWithEmailAndPassword(
         email: email,
@@ -56,6 +78,10 @@ class AuthService {
     String password,
     String name,
   ) async {
+    if (kDemoMode) {
+      return await MockAuthService.createUserWithEmailAndPassword(email, password);
+    }
+
     try {
       final credential = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -89,6 +115,10 @@ class AuthService {
 
   // Sign out
   Future<void> signOut() async {
+    if (kDemoMode) {
+      await MockAuthService.signOut();
+      return;
+    }
     await _auth.signOut();
   }
 

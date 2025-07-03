@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../shared/providers/auth_provider.dart';
+import '../../../../shared/widgets/theme_toggle_widget.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -89,16 +90,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             
             // App Preferences Section
             _buildSectionHeader('App Preferences'),
-            _buildSwitchTile(
-              icon: Icons.dark_mode_outlined,
-              title: 'Dark Mode',
-              subtitle: 'Use dark theme (Coming Soon)',
-              value: _darkModeEnabled,
-              onChanged: (value) {
-                setState(() => _darkModeEnabled = value);
-                _showComingSoon('Dark Mode');
-              },
-            ),
+            const ThemeToggleWidget(),
             _buildSwitchTile(
               icon: Icons.location_on_outlined,
               title: 'Location Services',

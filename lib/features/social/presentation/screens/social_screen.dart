@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../shared/models/social_models.dart';
 import '../../../../shared/providers/auth_provider.dart';
+import '../../../../shared/widgets/theme_toggle_widget.dart';
+import '../widgets/comments_screen.dart';
 
 class SocialScreen extends ConsumerStatefulWidget {
   const SocialScreen({super.key});
@@ -30,6 +32,7 @@ class _SocialScreenState extends ConsumerState<SocialScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         actions: [
+          const QuickThemeToggle(),
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: _showCreatePostDialog,
@@ -398,17 +401,9 @@ class _SocialScreenState extends ConsumerState<SocialScreen> {
   }
 
   void _showCommentsDialog(GreenityPost post) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Comments'),
-        content: const Text('Comments feature coming soon!'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
-          ),
-        ],
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => CommentsScreen(post: post),
       ),
     );
   }

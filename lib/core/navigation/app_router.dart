@@ -6,6 +6,9 @@ import '../../features/home/presentation/screens/home_screen.dart';
 import '../../features/upcycle/presentation/screens/upcycle_screen.dart';
 import '../../features/market/presentation/screens/market_screen.dart';
 import '../../features/social/presentation/screens/social_screen.dart';
+import '../../features/social/presentation/screens/events_screen.dart';
+import '../../features/social/presentation/screens/messages_screen.dart';
+import '../../features/social/presentation/screens/friends_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
 import '../../features/profile/presentation/screens/coins_screen.dart';
 import '../../features/profile/presentation/screens/my_store_screen.dart';
@@ -143,17 +146,17 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/events',
         name: 'events',
-        builder: (context, state) => const PlaceholderScreen(title: 'Events'),
+        builder: (context, state) => const EventsScreen(),
       ),
       GoRoute(
         path: '/friends',
         name: 'friends',
-        builder: (context, state) => const PlaceholderScreen(title: 'Friends'),
+        builder: (context, state) => const FriendsScreen(),
       ),
       GoRoute(
         path: '/messages',
         name: 'messages',
-        builder: (context, state) => const PlaceholderScreen(title: 'Messages'),
+        builder: (context, state) => const MessagesScreen(),
       ),
       GoRoute(
         path: '/add-product-listing',
