@@ -27,22 +27,48 @@ class _SocialScreenState extends ConsumerState<SocialScreen> {
     final currentUserAsync = ref.watch(currentUserProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Greenity'),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        actions: [
-          const QuickThemeToggle(),
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: _showCreatePostDialog,
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+      backgroundColor: Colors.white,
+      body: SafeArea(
         child: Column(
           children: [
+            // Header Section with light green background
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+              decoration: const BoxDecoration(
+                color: AppTheme.headerColor,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Greenity',
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.textPrimary,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      const QuickThemeToggle(),
+                      const SizedBox(width: 8),
+                      IconButton(
+                        icon: const Icon(Icons.add, color: AppTheme.textPrimary),
+                        onPressed: _showCreatePostDialog,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            // Main Content
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
             // Profile Gauge/Circle
             currentUserAsync.when(
               data: (user) => _buildProfileGauge(user),
@@ -87,8 +113,12 @@ class _SocialScreenState extends ConsumerState<SocialScreen> {
 
             const SizedBox(height: 16),
 
-            // Posts List
-            ..._posts.map((post) => _buildPostCard(post)),
+                    // Posts List
+                    ..._posts.map((post) => _buildPostCard(post)),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

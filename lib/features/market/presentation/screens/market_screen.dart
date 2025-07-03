@@ -172,12 +172,22 @@ class _MarketScreenState extends ConsumerState<MarketScreen> {
                       onSelected: (selected) {
                         _onCategorySelected(selected ? category : null);
                       },
-                      backgroundColor: AppTheme.lightGreen.withOpacity(0.2),
-                      selectedColor: AppTheme.primaryGreen.withOpacity(0.3),
+                      backgroundColor: AppTheme.lightGreen.withValues(alpha: 0.2),
+                      selectedColor: AppTheme.primaryGreen.withValues(alpha: 0.3),
                       labelStyle: TextStyle(
                         color: isSelected ? AppTheme.primaryGreen : AppTheme.darkGreen,
                         fontWeight: FontWeight.w500,
+                        fontSize: 13,
                       ),
+                      side: BorderSide(
+                        color: isSelected ? AppTheme.primaryGreen : Colors.grey[300]!,
+                        width: 1,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      elevation: isSelected ? 2 : 0,
+                      shadowColor: AppTheme.primaryGreen.withValues(alpha: 0.3),
                     ),
                   );
                 },
