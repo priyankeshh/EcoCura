@@ -75,12 +75,14 @@ class PopularProductCard extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Product Name
                   Text(
                     product.name,
                     style: const TextStyle(
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: FontWeight.w600,
                       color: AppTheme.textPrimary,
                     ),
@@ -88,29 +90,29 @@ class PopularProductCard extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  
-                  const SizedBox(height: 4),
-                  
+
+                  const SizedBox(height: 2),
+
                   // Price
                   Text(
                     '₹${product.price.toInt()}',
                     style: const TextStyle(
-                      fontSize: 12,
+                      fontSize: 11,
                       color: AppTheme.textSecondary,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
 
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
 
                   // View Button
                   SizedBox(
                     width: double.infinity,
-                    height: 28,
+                    height: 24,
                     child: ElevatedButton(
                       onPressed: onTap,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.primaryGreen.withOpacity(0.9),
+                        backgroundColor: AppTheme.primaryGreen.withValues(alpha: 0.9),
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4),
@@ -121,14 +123,12 @@ class PopularProductCard extends StatelessWidget {
                       child: const Text(
                         'View',
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 11,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   ),
-                  
-                  const SizedBox(height: 8),
                 ],
               ),
             ),

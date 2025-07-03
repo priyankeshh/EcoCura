@@ -2,16 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // Color Palette (matching your iOS app's green theme)
-  static const Color primaryGreen = Color(0xFF4CAF50);
-  static const Color lightGreen = Color(0xFF81C784);
-  static const Color darkGreen = Color(0xFF388E3C);
-  static const Color accentGreen = Color(0xFF66BB6A);
-  
-  static const Color backgroundColor = Color(0xFFF5F5F5);
+  // Enhanced EcoCura Color Palette - Vibrant & Eco-Friendly
+  static const Color primaryGreen = Color(0xFF2E7D32);      // Rich forest green
+  static const Color lightGreen = Color(0xFF4CAF50);        // Bright eco green
+  static const Color darkGreen = Color(0xFF1B5E20);         // Deep forest
+  static const Color accentGreen = Color(0xFF66BB6A);       // Fresh mint
+  static const Color leafGreen = Color(0xFF8BC34A);         // Natural leaf
+
+  // Background & Surface Colors
+  static const Color backgroundColor = Color(0xFFF8FFF8);    // Very light green tint
   static const Color cardColor = Color(0xFFFFFFFF);
-  static const Color textPrimary = Color(0xFF212121);
-  static const Color textSecondary = Color(0xFF757575);
+  static const Color surfaceColor = Color(0xFFF1F8E9);      // Subtle green surface
+
+  // Text Colors
+  static const Color textPrimary = Color(0xFF1B5E20);       // Dark green text
+  static const Color textSecondary = Color(0xFF4E7C59);     // Medium green text
+  static const Color textLight = Color(0xFF81C784);         // Light green text
+
+  // Accent Colors
+  static const Color warningColor = Color(0xFFFF9800);      // Orange for warnings
+  static const Color errorColor = Color(0xFFE53935);        // Red for errors
+  static const Color successColor = Color(0xFF4CAF50);      // Green for success
 
   static ThemeData get lightTheme {
     return ThemeData(
@@ -19,43 +30,70 @@ class AppTheme {
       colorScheme: ColorScheme.fromSeed(
         seedColor: primaryGreen,
         brightness: Brightness.light,
+        primary: primaryGreen,
+        secondary: accentGreen,
+        surface: cardColor,
+        onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onSurface: textPrimary,
       ),
-      textTheme: GoogleFonts.interTextTheme(),
-      
-      // AppBar Theme
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.white,
-        foregroundColor: textPrimary,
+      textTheme: GoogleFonts.poppinsTextTheme().copyWith(
+        displayLarge: GoogleFonts.poppins(color: textPrimary, fontWeight: FontWeight.bold),
+        displayMedium: GoogleFonts.poppins(color: textPrimary, fontWeight: FontWeight.w600),
+        headlineLarge: GoogleFonts.poppins(color: textPrimary, fontWeight: FontWeight.w600),
+        headlineMedium: GoogleFonts.poppins(color: textPrimary, fontWeight: FontWeight.w500),
+        bodyLarge: GoogleFonts.poppins(color: textPrimary),
+        bodyMedium: GoogleFonts.poppins(color: textSecondary),
+      ),
+
+      // AppBar Theme - Eco-friendly gradient
+      appBarTheme: AppBarTheme(
+        backgroundColor: primaryGreen,
+        foregroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        titleTextStyle: TextStyle(
-          color: textPrimary,
-          fontSize: 18,
+        titleTextStyle: GoogleFonts.poppins(
+          color: Colors.white,
+          fontSize: 20,
           fontWeight: FontWeight.w600,
         ),
       ),
       
-      // Card Theme
+      // Card Theme - Enhanced for presentation
       cardTheme: CardThemeData(
         color: cardColor,
-        elevation: 2,
+        elevation: 3,
+        shadowColor: primaryGreen.withValues(alpha: 0.1),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
         ),
       ),
       
-      // Button Themes
+      // Button Themes - Enhanced for presentation
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: primaryGreen,
           foregroundColor: Colors.white,
+          elevation: 2,
+          shadowColor: primaryGreen.withValues(alpha: 0.3),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(12),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          textStyle: GoogleFonts.poppins(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
-      
+
+      // Floating Action Button Theme
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: accentGreen,
+        foregroundColor: Colors.white,
+        elevation: 4,
+      ),
+
       // Input Decoration Theme
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
