@@ -161,7 +161,7 @@ class _UpcycleScreenState extends ConsumerState<UpcycleScreen> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child: Image.asset(
-                            'assets/images/App_Icon.png',
+                            'assets/images/logo.png',
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
                               return Container(
@@ -292,6 +292,42 @@ class _UpcycleScreenState extends ConsumerState<UpcycleScreen> {
               if (!_isAnalyzing) ...[
                 Column(
                   children: [
+                    // Logo above buttons
+                    Container(
+                      width: 120,
+                      height: 120,
+                      margin: const EdgeInsets.only(bottom: 32),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.1),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Image.asset(
+                          'assets/images/logo.png',
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: AppTheme.primaryGreen,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: const Icon(
+                                Icons.eco,
+                                color: Colors.white,
+                                size: 60,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
                     // Photo Library Button
                     SizedBox(
                       width: double.infinity,
@@ -340,7 +376,7 @@ class _UpcycleScreenState extends ConsumerState<UpcycleScreen> {
                           });
                         },
                         style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: AppTheme.primaryGreen),
+                          side: const BorderSide(color: AppTheme.primaryGreen),
                         ),
                         child: const Text('Clear Image'),
                       ),
