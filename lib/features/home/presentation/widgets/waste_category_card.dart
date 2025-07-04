@@ -18,8 +18,13 @@ class WasteCategoryCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: AppTheme.lightGreen.withValues(alpha: 0.3),
+          // FIXED: Use explicit light background to prevent dark theme issues
+          color: Colors.white,
           borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: AppTheme.lightGreen.withValues(alpha: 0.5),
+            width: 1,
+          ),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.05),
@@ -69,7 +74,7 @@ class WasteCategoryCard extends StatelessWidget {
               ),
             ),
 
-            // Category Name
+            // Category Name - FIXED: Explicit text styling to prevent theme issues
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
@@ -77,7 +82,8 @@ class WasteCategoryCard extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: AppTheme.textPrimary,
+                  color: AppTheme.textPrimary, // Explicit dark text color
+                  backgroundColor: Colors.transparent, // Ensure transparent background
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 1,

@@ -32,6 +32,9 @@ dependencies:
   # tflite_flutter: ^0.10.4
   url_launcher: ^6.2.1
 
+  # Video Playback
+  youtube_player_flutter: ^9.1.1
+
   # UI Components
   cached_network_image: ^3.3.0
   carousel_slider: ^5.1.1

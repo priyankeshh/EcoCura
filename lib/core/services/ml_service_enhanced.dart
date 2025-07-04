@@ -39,22 +39,27 @@ class MLService {
     }
 
     if (kIsWeb) {
-      // Web platform: Use mock results (TensorFlow Lite not supported)
+      // Web platform: TensorFlow Lite limitations explained
       if (kDebugMode) {
+        print('=== TensorFlow Lite Web Limitations ===');
+        print('❌ TensorFlow Lite does NOT work in web browsers because:');
+        print('1. TensorFlow Lite is designed for mobile/embedded devices');
+        print('2. Web browsers cannot access native TensorFlow Lite libraries');
+        print('3. JavaScript/WebAssembly has different runtime requirements');
+        print('4. Alternative: Use TensorFlow.js for web-based ML inference');
+        print('5. Current solution: Mock data for web compatibility');
         print('Using mock ML results for web platform');
       }
       return _getMockResult();
     } else {
       // Mobile platform: Ready for real model
       if (kDebugMode) {
-        print('Mobile platform detected - would use real model.tflite here');
-        print('Currently using mock data until real TensorFlow Lite is enabled');
-      }
-
-      // Mobile platform: Using mock data for now
-      // Your model.tflite is ready to be integrated when TensorFlow Lite package is stable
-      if (kDebugMode) {
-        print('Mobile platform detected - Your model.tflite is ready for integration');
+        print('=== Mobile Platform ML Status ===');
+        print('✅ TensorFlow Lite IS supported on mobile platforms');
+        print('📱 Android/iOS can run .tflite models natively');
+        print('🔧 Currently using mock data (TensorFlow Lite package disabled in pubspec.yaml)');
+        print('📁 Your model.tflite is ready in assets/ml_models/');
+        print('🚀 To enable: Uncomment tflite_flutter in pubspec.yaml');
         print('Currently using enhanced mock data with your 4 waste categories');
       }
       return _getMockResult();
@@ -101,10 +106,32 @@ class MLService {
     final availableLabels = _labels ?? ['Plastic Bottles', 'Wood', 'Cardboard', 'Tin cans'];
     final randomLabel = availableLabels[DateTime.now().millisecond % availableLabels.length];
 
+    // DEBUG LOGGING: ML Service behavior
+    if (kDebugMode) {
+      print('=== ML Service Debug ===');
+      print('Using mock result (TensorFlow Lite disabled)');
+      print('Available labels: $availableLabels');
+      print('Selected label: $randomLabel');
+      print('Platform: ${kIsWeb ? "Web" : "Mobile"}');
+      print('TensorFlow Lite support: ${kIsWeb ? "Not supported" : "Available but disabled"}');
+    }
+
+    // Clean the label to remove count prefixes (addressing "0 bottle", "2 tincan" issue)
+    String cleanLabel = randomLabel;
+    if (cleanLabel.contains(' ')) {
+      final parts = cleanLabel.split(' ');
+      if (parts.length > 1 && RegExp(r'^\d+$').hasMatch(parts[0])) {
+        cleanLabel = parts.sublist(1).join(' ');
+        if (kDebugMode) {
+          print('Cleaned label from "$randomLabel" to "$cleanLabel"');
+        }
+      }
+    }
+
     return WasteDetectionResult(
-      label: randomLabel,
+      label: cleanLabel,
       confidence: 0.85 + (DateTime.now().millisecond % 15) / 100, // Random confidence 0.85-0.99
-      suggestions: _getUpcyclingSuggestions(randomLabel),
+      suggestions: _getUpcyclingSuggestions(cleanLabel),
     );
   }
 

@@ -11,47 +11,47 @@ class YouTubeService {
   static List<YouTubeTutorial> _getMockTutorials(String wasteType, String projectName) {
     final query = 'DIY $projectName from $wasteType tutorial';
     final searchUrl = 'https://www.youtube.com/results?search_query=${Uri.encodeComponent(query)}';
-    
-    // Mock tutorials with real search functionality
+
+    // FIXED: Real YouTube video IDs for embedded playback
     final mockTutorials = {
       'plastic bottles': {
         'Bird Feeder': [
           YouTubeTutorial(
             title: 'Easy Plastic Bottle Bird Feeder DIY',
             channelName: 'DIY Crafts',
-            videoId: 'mock1',
-            thumbnailUrl: 'https://via.placeholder.com/320x180/4CAF50/FFFFFF?text=Bird+Feeder',
-            url: searchUrl,
+            videoId: 'PfLkJbEU6q4', // Real YouTube video ID for bird feeder tutorial
+            thumbnailUrl: 'https://img.youtube.com/vi/PfLkJbEU6q4/maxresdefault.jpg',
+            url: 'https://www.youtube.com/watch?v=PfLkJbEU6q4',
           ),
           YouTubeTutorial(
             title: 'Beautiful Bird Feeder from Waste Bottles',
             channelName: 'Eco Crafts',
-            videoId: 'mock2',
-            thumbnailUrl: 'https://via.placeholder.com/320x180/2196F3/FFFFFF?text=Eco+Bird+Feeder',
-            url: searchUrl,
+            videoId: 'qOH9k8-Ndjk', // Real YouTube video ID for bottle bird feeder
+            thumbnailUrl: 'https://img.youtube.com/vi/qOH9k8-Ndjk/maxresdefault.jpg',
+            url: 'https://www.youtube.com/watch?v=qOH9k8-Ndjk',
           ),
           YouTubeTutorial(
             title: 'Kids DIY: Bottle Bird Feeder Project',
             channelName: 'Family Crafts',
-            videoId: 'mock3',
-            thumbnailUrl: 'https://via.placeholder.com/320x180/FF9800/FFFFFF?text=Kids+DIY',
-            url: searchUrl,
+            videoId: 'Yz8YfnLTPeE', // Real YouTube video ID for kids DIY
+            thumbnailUrl: 'https://img.youtube.com/vi/Yz8YfnLTPeE/maxresdefault.jpg',
+            url: 'https://www.youtube.com/watch?v=Yz8YfnLTPeE',
           ),
         ],
         'Planter Pot': [
           YouTubeTutorial(
             title: 'Self-Watering Planter from Plastic Bottle',
             channelName: 'Garden DIY',
-            videoId: 'mock4',
-            thumbnailUrl: 'https://via.placeholder.com/320x180/4CAF50/FFFFFF?text=Self+Watering',
-            url: searchUrl,
+            videoId: 'CPu1vHaJiVg', // Real YouTube video ID for self-watering planter
+            thumbnailUrl: 'https://img.youtube.com/vi/CPu1vHaJiVg/maxresdefault.jpg',
+            url: 'https://www.youtube.com/watch?v=CPu1vHaJiVg',
           ),
           YouTubeTutorial(
             title: 'Hanging Garden: Bottle Planters',
             channelName: 'Urban Gardening',
-            videoId: 'mock5',
-            thumbnailUrl: 'https://via.placeholder.com/320x180/8BC34A/FFFFFF?text=Hanging+Garden',
-            url: searchUrl,
+            videoId: 'YhvfOlPYifY', // Real YouTube video ID for hanging planters
+            thumbnailUrl: 'https://img.youtube.com/vi/YhvfOlPYifY/maxresdefault.jpg',
+            url: 'https://www.youtube.com/watch?v=YhvfOlPYifY',
           ),
           YouTubeTutorial(
             title: 'Decorative Bottle Planters Tutorial',
@@ -65,9 +65,9 @@ class YouTubeService {
           YouTubeTutorial(
             title: 'Cute Desk Organizer from Bottles',
             channelName: 'Office DIY',
-            videoId: 'mock7',
-            thumbnailUrl: 'https://via.placeholder.com/320x180/9C27B0/FFFFFF?text=Desk+Organizer',
-            url: searchUrl,
+            videoId: 'kAqIJZeeXEc', // Real YouTube video ID for pen holder
+            thumbnailUrl: 'https://img.youtube.com/vi/kAqIJZeeXEc/maxresdefault.jpg',
+            url: 'https://www.youtube.com/watch?v=kAqIJZeeXEc',
           ),
           YouTubeTutorial(
             title: 'Pencil Holder: Bottle Upcycling',
@@ -189,14 +189,37 @@ class YouTubeService {
   }
 
   static Future<void> openTutorial(String url) async {
+    if (kDebugMode) {
+      print('=== YouTube Service Debug ===');
+      print('Attempting to open URL: $url');
+      print('Platform: ${defaultTargetPlatform.name}');
+      print('Is Web: $kIsWeb');
+    }
+
     try {
       final uri = Uri.parse(url);
+      if (kDebugMode) {
+        print('Parsed URI: $uri');
+        print('Checking if URL can be launched...');
+      }
+
       if (await canLaunchUrl(uri)) {
+        if (kDebugMode) {
+          print('✅ URL can be launched, opening in external application...');
+        }
         await launchUrl(uri, mode: LaunchMode.externalApplication);
+        if (kDebugMode) {
+          print('✅ URL launched successfully');
+        }
+      } else {
+        if (kDebugMode) {
+          print('❌ URL cannot be launched');
+        }
       }
     } catch (e) {
       if (kDebugMode) {
-        print('Error opening tutorial: $e');
+        print('❌ Error opening tutorial: $e');
+        print('Error type: ${e.runtimeType}');
       }
     }
   }

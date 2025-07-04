@@ -102,9 +102,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
           const SizedBox(height: 24),
 
-          // Greeting
+          // Greeting - FIXED: Updated fallback name
           Text(
-            'Hi ${user?.name ?? 'Gracy'}',
+            'Hi ${user?.name ?? 'Priyankesh'}',
             style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w600,

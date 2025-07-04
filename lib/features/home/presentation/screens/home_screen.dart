@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -8,6 +9,7 @@ import '../../../../shared/models/product_model.dart';
 import '../../../../shared/providers/product_provider.dart';
 import '../widgets/waste_category_card.dart';
 import '../widgets/popular_product_card.dart';
+import '../widgets/image_slider.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -112,77 +114,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // FIXED: Add Image Slider at the top (matching original iOS app)
+                    const ImageSlider(),
+                    const SizedBox(height: 24),
+
                     // Upcycling Process Card (matching the circular diagram in reference)
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(20),
-                      margin: const EdgeInsets.only(bottom: 24),
-                      decoration: BoxDecoration(
-                        color: AppTheme.lightGreen.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: AppTheme.primaryGreen.withValues(alpha: 0.3),
-                          width: 1,
-                        ),
-                      ),
-                      child: Column(
-                        children: [
-                          // Circular Process Diagram
-                          SizedBox(
-                            height: 120,
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                // Center icon
-                                Container(
-                                  width: 50,
-                                  height: 50,
-                                  decoration: const BoxDecoration(
-                                    color: AppTheme.primaryGreen,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: const Icon(
-                                    Icons.recycling,
-                                    color: Colors.white,
-                                    size: 24,
-                                  ),
-                                ),
-                                // Process steps around the circle
-                                Positioned(
-                                  top: 5,
-                                  child: _buildProcessStep('🎨', 'UpCycling'),
-                                ),
-                                Positioned(
-                                  right: 5,
-                                  child: _buildProcessStep('💡', 'Ideas'),
-                                ),
-                                Positioned(
-                                  bottom: 5,
-                                  child: _buildProcessStep('🌱', 'Impact'),
-                                ),
-                                Positioned(
-                                  left: 5,
-                                  child: _buildProcessStep('♻️', 'Recycle'),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          const SizedBox(height: 16),
-
-                          // Process description
-                          const Text(
-                            'Transform waste into wonderful creations',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: AppTheme.textSecondary,
-                              fontStyle: FontStyle.italic,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
+                  
 
                     // Most Upcycled Waste Section
                     Row(

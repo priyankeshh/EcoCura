@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/services/ml_service_enhanced.dart';
 import '../../../../core/services/youtube_service.dart';
+import 'video_player_screen.dart';
 
 class ScanResultsScreen extends StatelessWidget {
   final Uint8List imageBytes;
@@ -352,7 +353,7 @@ class ScanResultsScreen extends StatelessWidget {
                   itemCount: tutorials.length,
                   itemBuilder: (context, index) {
                     final tutorial = tutorials[index];
-                    return _buildTutorialCard(tutorial);
+                    return _buildTutorialCard(context, tutorial);
                   },
                 ),
               ),
@@ -363,9 +364,17 @@ class ScanResultsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTutorialCard(YouTubeTutorial tutorial) {
+  Widget _buildTutorialCard(BuildContext context, YouTubeTutorial tutorial) {
     return GestureDetector(
-      onTap: () => YouTubeService.openTutorial(tutorial.url),
+      onTap: () {
+        // FIXED: Open embedded video player instead of external browser
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => VideoPlayerScreen(tutorial: tutorial),
+          ),
+        );
+      },
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
         decoration: BoxDecoration(

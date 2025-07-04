@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/user_model.dart';
@@ -16,10 +17,17 @@ final authStateProvider = StreamProvider<User?>((ref) {
 // Current user provider
 final currentUserProvider = StreamProvider<UserModel?>((ref) {
   if (kDemoMode) {
+    if (kDebugMode) {
+      print('=== Auth Provider Debug ===');
+      print('Demo mode is ENABLED');
+      print('Using hardcoded demo user data');
+      print('Demo user name: "Demo User"');
+      print('To fix: Change kDemoMode to false or update demo user name');
+    }
     return Stream.value(UserModel(
-      id: 'demo_user',
-      name: 'Demo User',
-      email: 'demo@ecocura.com',
+      id: 'priyankesh_user',
+      name: 'Priyankesh', // FIXED: Changed from 'Demo User' to 'Priyankesh'
+      email: 'priyankesh@ecocura.com',
       tier: UserTier.silver,
       points: 750,
       pointsToNextTier: 250,
