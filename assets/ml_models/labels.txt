@@ -1,4 +1,4 @@
-0 Plastic Bottles
-1 Wood
-2 Cardboard
-3 Tin cans
+0 Bottle
+1 Cardboard
+2 tincan
+3 wood

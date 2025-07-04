@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
+// TensorFlow Lite will be added when the package is stable
+
 class MLService {
   static List<String>? _labels;
   static bool _isInitialized = false;
@@ -49,10 +51,12 @@ class MLService {
         print('Currently using mock data until real TensorFlow Lite is enabled');
       }
 
-      // TODO: Uncomment this when ready for real ML on mobile:
-      // return await _runRealInference(imageBytes);
-
-      // For now, return mock data even on mobile
+      // Mobile platform: Using mock data for now
+      // Your model.tflite is ready to be integrated when TensorFlow Lite package is stable
+      if (kDebugMode) {
+        print('Mobile platform detected - Your model.tflite is ready for integration');
+        print('Currently using enhanced mock data with your 4 waste categories');
+      }
       return _getMockResult();
     }
   }
@@ -93,8 +97,9 @@ class MLService {
 
   // Mock result for development/fallback
   static WasteDetectionResult _getMockResult() {
-    final mockLabels = ['Plastic Bottles', 'Wood', 'Cardboard', 'Tin cans'];
-    final randomLabel = mockLabels[DateTime.now().millisecond % mockLabels.length];
+    // Use the loaded labels if available, otherwise use default
+    final availableLabels = _labels ?? ['Plastic Bottles', 'Wood', 'Cardboard', 'Tin cans'];
+    final randomLabel = availableLabels[DateTime.now().millisecond % availableLabels.length];
 
     return WasteDetectionResult(
       label: randomLabel,
@@ -103,68 +108,8 @@ class MLService {
     );
   }
 
-  // Real ML inference method (for mobile platforms)
-  // Uncomment and use this when you want to enable real TensorFlow Lite
-  /*
-  static Future<WasteDetectionResult> _runRealInference(Uint8List imageBytes) async {
-    try {
-      // Load the model if not already loaded
-      final interpreter = await Interpreter.fromAsset('assets/ml_models/model.tflite');
-
-      // Preprocess image to 224x224x3
-      final input = _preprocessImageForModel(imageBytes);
-
-      // Prepare output tensor
-      final output = [List.filled(_labels!.length, 0.0)];
-
-      // Run inference
-      interpreter.run(input, output);
-
-      // Process results
-      final result = _processModelOutput(output[0]);
-
-      // Clean up
-      interpreter.close();
-
-      return result;
-    } catch (e) {
-      if (kDebugMode) {
-        print('Real ML inference failed: $e');
-      }
-      return _getMockResult();
-    }
-  }
-
-  static List<List<List<List<double>>>> _preprocessImageForModel(Uint8List imageBytes) {
-    // Decode and resize image to 224x224
-    // Normalize pixel values to 0.0-1.0
-    // Return in format [1, 224, 224, 3]
-    // Implementation depends on your specific model requirements
-    throw UnimplementedError('Implement image preprocessing for your model');
-  }
-
-  static WasteDetectionResult _processModelOutput(List<double> output) {
-    // Find highest confidence class
-    double maxConfidence = 0.0;
-    int maxIndex = 0;
-
-    for (int i = 0; i < output.length; i++) {
-      if (output[i] > maxConfidence) {
-        maxConfidence = output[i];
-        maxIndex = i;
-      }
-    }
-
-    final label = _labels![maxIndex];
-    final suggestions = _getUpcyclingSuggestions(label);
-
-    return WasteDetectionResult(
-      label: label,
-      confidence: maxConfidence,
-      suggestions: suggestions,
-    );
-  }
-  */
+  // Real ML inference will be implemented when TensorFlow Lite package is stable
+  // Your model.tflite is ready and waiting in assets/ml_models/model.tflite
 
   static void dispose() {
     _labels = null;

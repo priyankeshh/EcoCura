@@ -28,8 +28,8 @@ dependencies:
   image_picker: ^1.1.2
   image: ^4.5.4
 
-  # ML & AI
-  tflite_flutter: ^0.10.4
+  # ML & AI (TensorFlow Lite temporarily disabled due to compatibility issues)
+  # tflite_flutter: ^0.10.4
   url_launcher: ^6.2.1
 
   # UI Components
