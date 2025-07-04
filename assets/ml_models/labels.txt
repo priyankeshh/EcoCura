@@ -1,10 +1,4 @@
-Plastic Bottle
-Glass Bottle
-Cardboard Box
-Metal Can
-Paper
-Wooden Pallet
-PVC Pipe
-Fabric
-Electronic Waste
-Organic Waste
+0 Bottle
+1 Cardboard
+2 tincan
+3 wood

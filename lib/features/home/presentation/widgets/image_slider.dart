@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import '../../../../core/theme/app_theme.dart';
@@ -12,12 +13,12 @@ class ImageSlider extends StatefulWidget {
 class _ImageSliderState extends State<ImageSlider> {
   int _currentIndex = 0;
   
+  // FIXED: Reduced to 3-4 images as requested, using verified assets
   final List<String> _imageUrls = [
     'assets/images/imageSlider.png',
     'assets/images/EcoCraft.jpeg',
     'assets/images/ReArt.jpeg',
     'assets/images/Upcycle.jpeg',
-    'assets/images/upcyclebottle.jpeg',
   ];
 
   @override
@@ -59,6 +60,11 @@ class _ImageSliderState extends State<ImageSlider> {
                       imageUrl,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
+                        if (kDebugMode) {
+                          print('=== Image Slider Debug ===');
+                          print('Failed to load image: $imageUrl');
+                          print('Error: $error');
+                        }
                         return Container(
                           decoration: BoxDecoration(
                             gradient: LinearGradient(

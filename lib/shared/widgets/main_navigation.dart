@@ -24,16 +24,16 @@ class _MainNavigationState extends State<MainNavigation> {
       route: '/home',
     ),
     NavigationItem(
-      icon: Icons.recycling_outlined,
-      activeIcon: Icons.recycling,
-      label: 'UpCycle',
-      route: '/upcycle',
-    ),
-    NavigationItem(
-      icon: Icons.store_outlined,
-      activeIcon: Icons.store,
+      icon: Icons.shopping_bag_outlined,
+      activeIcon: Icons.shopping_bag,
       label: 'Market',
       route: '/market',
+    ),
+    NavigationItem(
+      icon: Icons.qr_code_scanner_outlined,
+      activeIcon: Icons.qr_code_scanner,
+      label: 'Scan',
+      route: '/upcycle',
     ),
     NavigationItem(
       icon: Icons.eco_outlined,

@@ -93,7 +93,7 @@ class GreenityPost {
       GreenityPost(
         id: 'post1',
         userId: 'user1',
-        userName: 'Suryasen',
+        userName: 'Priyankesh',
         userProfileImage: 'assets/images/boy.png',
         content: 'Hello Greenites🌳, Welcome to my new app which facilitates to the upcycling of the waste♻️ while also generating income💰 to the artists and entrepreneurs.',
         createdAt: DateTime.now().subtract(const Duration(days: 1)),

@@ -17,15 +17,18 @@ class WasteCategoryCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 100,
-        height: 140,
         decoration: BoxDecoration(
-          color: AppTheme.primaryGreen.withOpacity(0.3),
-          borderRadius: BorderRadius.circular(8),
+          // FIXED: Use explicit light background to prevent dark theme issues
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: AppTheme.lightGreen.withValues(alpha: 0.5),
+            width: 1,
+          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 4,
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 8,
               offset: const Offset(0, 2),
             ),
           ],
@@ -33,22 +36,33 @@ class WasteCategoryCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Image
+            // Image Container
             Container(
               width: 60,
               height: 60,
+              margin: const EdgeInsets.only(bottom: 12),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 4,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(12),
                 child: Image.asset(
                   category.imagePath,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
                     return Container(
-                      color: AppTheme.lightGreen.withOpacity(0.2),
+                      decoration: BoxDecoration(
+                        color: AppTheme.lightGreen.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                       child: Icon(
                         _getCategoryIcon(category.name),
                         size: 30,
@@ -60,9 +74,7 @@ class WasteCategoryCard extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 8),
-
-            // Category Name
+            // Category Name - FIXED: Explicit text styling to prevent theme issues
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
@@ -70,27 +82,14 @@ class WasteCategoryCard extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: AppTheme.textPrimary,
+                  color: AppTheme.textPrimary, // Explicit dark text color
+                  backgroundColor: Colors.transparent, // Ensure transparent background
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-
-            // Upcycle Count
-            if (category.upcycleCount > 0)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Text(
-                  '${category.upcycleCount} upcycled',
-                  style: const TextStyle(
-                    fontSize: 10,
-                    color: AppTheme.textSecondary,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
           ],
         ),
       ),

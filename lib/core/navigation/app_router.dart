@@ -1,19 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
 import '../../features/upcycle/presentation/screens/upcycle_screen.dart';
 import '../../features/market/presentation/screens/market_screen.dart';
 import '../../features/social/presentation/screens/social_screen.dart';
+import '../../features/social/presentation/screens/events_screen.dart';
+import '../../features/social/presentation/screens/messages_screen.dart';
+import '../../features/social/presentation/screens/friends_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
 import '../../features/profile/presentation/screens/coins_screen.dart';
 import '../../features/profile/presentation/screens/my_store_screen.dart';
+import '../../features/auth/presentation/screens/login_screen.dart';
+import '../../features/auth/presentation/screens/signup_screen.dart';
+import '../../features/profile/presentation/screens/edit_profile_screen.dart';
+import '../../features/profile/presentation/screens/my_orders_screen.dart';
+import '../../features/profile/presentation/screens/settings_screen.dart';
+import '../../features/market/presentation/screens/search_results_screen.dart';
 import '../../shared/widgets/main_navigation.dart';
+import '../../shared/providers/auth_provider.dart';
 import '../screens/placeholder_screen.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
+  final authState = ref.watch(authStateProvider);
+
   return GoRouter(
-    initialLocation: '/home',
+    initialLocation: '/login',
+    redirect: (context, state) {
+      final isLoggedIn = authState.value != null;
+      final isLoggingIn = state.matchedLocation == '/login' || state.matchedLocation == '/signup';
+
+      // If not logged in and not on auth pages, redirect to login
+      if (!isLoggedIn && !isLoggingIn) {
+        return '/login';
+      }
+
+      // If logged in and on auth pages, redirect to home
+      if (isLoggedIn && isLoggingIn) {
+        return '/home';
+      }
+
+      return null; // No redirect needed
+    },
     routes: [
       ShellRoute(
         builder: (context, state, child) {
@@ -47,12 +76,19 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
-      // Additional routes for detailed screens
+      // Authentication routes
       GoRoute(
         path: '/login',
         name: 'login',
-        builder: (context, state) => const PlaceholderScreen(title: 'Login'),
+        builder: (context, state) => const LoginScreen(),
       ),
+      GoRoute(
+        path: '/signup',
+        name: 'signup',
+        builder: (context, state) => const SignupScreen(),
+      ),
+
+      // Additional routes for detailed screens
       GoRoute(
         path: '/product/:id',
         name: 'product-detail',
@@ -74,7 +110,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: 'search',
         builder: (context, state) {
           final query = state.uri.queryParameters['q'] ?? '';
-          return PlaceholderScreen(title: 'Search Results', subtitle: 'Query: $query');
+          return SearchResultsScreen(query: query);
         },
       ),
       GoRoute(
@@ -85,7 +121,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/orders',
         name: 'orders',
-        builder: (context, state) => const PlaceholderScreen(title: 'My Orders'),
+        builder: (context, state) => const MyOrdersScreen(),
       ),
       GoRoute(
         path: '/my-store',
@@ -100,27 +136,27 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/edit-profile',
         name: 'edit-profile',
-        builder: (context, state) => const PlaceholderScreen(title: 'Edit Profile'),
+        builder: (context, state) => const EditProfileScreen(),
       ),
       GoRoute(
         path: '/settings',
         name: 'settings',
-        builder: (context, state) => const PlaceholderScreen(title: 'Settings'),
+        builder: (context, state) => const SettingsScreen(),
       ),
       GoRoute(
         path: '/events',
         name: 'events',
-        builder: (context, state) => const PlaceholderScreen(title: 'Events'),
+        builder: (context, state) => const EventsScreen(),
       ),
       GoRoute(
         path: '/friends',
         name: 'friends',
-        builder: (context, state) => const PlaceholderScreen(title: 'Friends'),
+        builder: (context, state) => const FriendsScreen(),
       ),
       GoRoute(
         path: '/messages',
         name: 'messages',
-        builder: (context, state) => const PlaceholderScreen(title: 'Messages'),
+        builder: (context, state) => const MessagesScreen(),
       ),
       GoRoute(
         path: '/add-product-listing',

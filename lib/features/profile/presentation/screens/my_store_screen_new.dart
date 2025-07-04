@@ -75,8 +75,7 @@ class _MyStoreScreenState extends ConsumerState<MyStoreScreen>
 
             // Navigation tabs
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              margin: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -186,23 +185,18 @@ class _MyStoreScreenState extends ConsumerState<MyStoreScreen>
                             height: 60,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
-                              color: const Color(0xFFE8F5E8),
+                              color: const Color(0xFFFFE0B2),
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: Image.asset(
-                                'assets/images/bird_feeder.png',
+                                'assets/images/bird_feeder.jpg', // You'll need to add this image
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) {
-                                  return Container(
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xFFE8F5E8),
-                                    ),
-                                    child: const Icon(
-                                      Icons.eco,
-                                      color: Color(0xFF4CAF50),
-                                      size: 30,
-                                    ),
+                                  return const Icon(
+                                    Icons.eco,
+                                    color: Color(0xFF8D6E63),
+                                    size: 30,
                                   );
                                 },
                               ),
@@ -255,108 +249,36 @@ class _MyStoreScreenState extends ConsumerState<MyStoreScreen>
           ],
         ),
       ),
-      // Add the bottom navigation bar that shows in the screenshot
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 10,
-              offset: const Offset(0, -2),
-            ),
-          ],
-        ),
-        child: BottomNavigationBar(
-          currentIndex: 1, // Market is selected in the screenshot (index 1)
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          selectedItemColor: const Color(0xFF4CAF50),
-          unselectedItemColor: Colors.grey[600],
-          selectedFontSize: 12,
-          unselectedFontSize: 12,
-          onTap: (index) {
-            Navigator.of(context).pop(); // Close the store screen
-            switch (index) {
-              case 0:
-                // Navigate to Home
-                break;
-              case 1:
-                // Already on Market/Store - stay here or go to main market
-                break;
-              case 2:
-                // Navigate to Scan/Camera
-                break;
-              case 3:
-                // Navigate to Community/Social
-                break;
-              case 4:
-                // Navigate to Profile
-                break;
-            }
-          },
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              activeIcon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.store),
-              activeIcon: Icon(Icons.store),
-              label: 'Market',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.qr_code_scanner_outlined),
-              activeIcon: Icon(Icons.qr_code_scanner),
-              label: 'Scan',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.eco_outlined),
-              activeIcon: Icon(Icons.eco),
-              label: 'Community',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline),
-              activeIcon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
-        ),
-      ),
     );
   }
 
   Widget _buildNavTab(String title, int index, bool isSelected) {
-    return Expanded(
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 3),
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-        decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF4CAF50) : const Color(0xFFE8F5E8),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              _getTabIcon(title),
-              size: 24,
-              color: isSelected ? Colors.white : const Color(0xFF4CAF50),
-            ),
-            const SizedBox(height: 4),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: isSelected ? const Color(0xFF4CAF50) : const Color(0xFFE8F5E8),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            _getTabIcon(title),
+            size: 20,
+            color: isSelected ? Colors.white : const Color(0xFF4CAF50),
+          ),
+          if (title != 'More') ...[
+            const SizedBox(width: 4),
             Text(
               title,
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 12,
                 fontWeight: FontWeight.w500,
                 color: isSelected ? Colors.white : const Color(0xFF4CAF50),
               ),
-              textAlign: TextAlign.center,
             ),
           ],
-        ),
+        ],
       ),
     );
   }
@@ -364,17 +286,17 @@ class _MyStoreScreenState extends ConsumerState<MyStoreScreen>
   IconData _getTabIcon(String title) {
     switch (title) {
       case 'Home':
-        return Icons.home_outlined;
+        return Icons.home;
       case 'Messages':
         return Icons.chat_bubble_outline;
       case 'Orders':
-        return Icons.receipt_long_outlined;
+        return Icons.receipt_long;
       case 'Listings':
-        return Icons.apps;
+        return Icons.grid_view;
       case 'More':
         return Icons.more_horiz;
       default:
-        return Icons.home_outlined;
+        return Icons.home;
     }
   }
 
