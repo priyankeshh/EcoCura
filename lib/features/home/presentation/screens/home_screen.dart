@@ -78,8 +78,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     children: [
                       // EcoCura Logo
                       Container(
-                        width: 40,
-                        height: 40,
+                        width: 60,
+                        height: 60,
                         margin: const EdgeInsets.only(right: 12),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
@@ -105,7 +105,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 child: const Icon(
                                   Icons.eco,
                                   color: Colors.white,
-                                  size: 24,
+                                  size: 36,
                                 ),
                               );
                             },

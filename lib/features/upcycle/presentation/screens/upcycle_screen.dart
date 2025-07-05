@@ -145,8 +145,8 @@ class _UpcycleScreenState extends ConsumerState<UpcycleScreen> {
                     children: [
                       // EcoCura Logo
                       Container(
-                        width: 40,
-                        height: 40,
+                        width: 60,
+                        height: 60,
                         margin: const EdgeInsets.only(right: 12),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
@@ -172,7 +172,7 @@ class _UpcycleScreenState extends ConsumerState<UpcycleScreen> {
                                 child: const Icon(
                                   Icons.eco,
                                   color: Colors.white,
-                                  size: 24,
+                                  size: 36,
                                 ),
                               );
                             },
@@ -233,45 +233,31 @@ class _UpcycleScreenState extends ConsumerState<UpcycleScreen> {
 
               const SizedBox(height: 40),
 
-              // Selected Image or Recycling Image
-              Container(
-                width: 200,
-                height: 200,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
+              // Selected Image Display (only show when image is selected)
+              if (_selectedImageBytes != null) ...[
+                Container(
+                  width: 200,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.1),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.memory(
+                      _selectedImageBytes!,
+                      fit: BoxFit.cover,
                     ),
-                  ],
+                  ),
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: _selectedImageBytes != null
-                      ? Image.memory(
-                          _selectedImageBytes!,
-                          fit: BoxFit.cover,
-                        )
-                      : Image.asset(
-                          'assets/images/plastic-recycling.png',
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              color: AppTheme.lightGreen.withValues(alpha: 0.3),
-                              child: const Icon(
-                                Icons.recycling,
-                                size: 60,
-                                color: AppTheme.primaryGreen,
-                              ),
-                            );
-                          },
-                        ),
-                ),
-              ),
-
-              const SizedBox(height: 40),
+                const SizedBox(height: 40),
+              ],
 
               // Analysis Status
               if (_isAnalyzing) ...[
@@ -294,8 +280,8 @@ class _UpcycleScreenState extends ConsumerState<UpcycleScreen> {
                   children: [
                     // Logo above buttons
                     Container(
-                      width: 120,
-                      height: 120,
+                      width: 160,
+                      height: 160,
                       margin: const EdgeInsets.only(bottom: 32),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
@@ -321,7 +307,7 @@ class _UpcycleScreenState extends ConsumerState<UpcycleScreen> {
                               child: const Icon(
                                 Icons.eco,
                                 color: Colors.white,
-                                size: 60,
+                                size: 80,
                               ),
                             );
                           },
