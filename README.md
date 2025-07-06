@@ -157,6 +157,9 @@ flutter build ios --release  # iOS
 
 ## � **User Flow**
 
+![image](https://github.com/user-attachments/assets/646d3d29-8ac4-4384-bed2-e0866443f271)
+
+
 ### **Core User Journey**
 1. **Onboarding**: Welcome screens introducing EcoCura's mission
 2. **Home Dashboard**: Personalized waste reduction insights
@@ -172,7 +175,22 @@ flutter build ios --release  # iOS
 - **🛒 Market**: Sustainable marketplace for upcycled products
 - **👤 Profile**: User achievements, points, and sustainability metrics
 
+### **App Screenshots**
+
+<img src="https://github.com/user-attachments/assets/2999d95e-8e32-4e84-a838-72f95ea37429" width="300"/> 
+<img src="https://github.com/user-attachments/assets/8e553d3e-9fae-4c4a-9339-d7465acabc57" width="300"/> 
+<img src="https://github.com/user-attachments/assets/2de26ae7-5309-465a-b748-6e0c69de3575" width="300"/> 
+<img src="https://github.com/user-attachments/assets/9574d1e3-ccbc-499d-ad38-58813a2cab3f" width="300"/> 
+<img src="https://github.com/user-attachments/assets/7d327a3e-4fb7-45eb-bef6-ef33b74a59f1" width="300"/>
+
+### **App Demo**
+https://github.com/user-attachments/assets/50b41f49-e530-421f-9627-195c80e5397c
+
+[Youtube](https://youtube.com/shorts/Fzf1jokLFzs?si=1qUJ250cYttgDlSO)
 ## 🏗️ **Technical Architecture**
+
+![image](https://github.com/user-attachments/assets/5a12adfd-1692-4c71-bd8e-993137d4318a)
+
 
 ### **Frontend (Flutter)**
 ```
